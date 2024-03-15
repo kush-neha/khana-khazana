@@ -97,13 +97,6 @@ button:active {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
 }
 
-.spanAndTextbox {
-  display: flex;
-  align-items: center; /* Align items vertically */
-  margin-bottom: 20px;
-
-}
-
 span {
   margin-left: 45%; /* Push the paragraph to the right */
   font-size: 14px; /* Adjust font size if needed */
@@ -113,7 +106,7 @@ span {
   margin-right: 20px;
 }
 .fetchButton{
-  width: 100%;
+  width: 50%;
 }
 
 .left-panel {
@@ -183,4 +176,53 @@ span {
 .nested-option {
   padding: 10px;
   cursor: pointer;
+}
+thead {
+  background-color: #f0f0f0;
+}
+
+/* Table header cell style */
+th {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Table body style */
+tbody {
+  border-top: 2px solid #ccc;
+}
+
+/* Table body row style */
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+/* Table body cell style */
+td {
+  padding: 10px;
+}
+
+/* Style for the input textbox */
+.textbox {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  margin-top: 5px; /* Adjust margin as needed */
+}
+
+.parameters-container {
+  display: flex;
+  align-items: center; /* Vertically center items */
+}
+
+.parameters-container h3 {
+  margin-right: 10px; /* Add some space between "Parameters" and the button */
+}
+
+.button-container {
+  display: flex;
+}
+
+.button-container button {
+  margin-right: 10px; /* Adjust spacing between buttons as needed */
 }
