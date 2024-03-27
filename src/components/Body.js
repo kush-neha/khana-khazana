@@ -2,35 +2,50 @@ import React, { useState } from "react";
 import "../Styles/Body.css";
 
 export const Body = () => {
-  const [showDescription, setShowDescription] = useState("");
-
-  const [showFetchButton, setShowFetchButton] = useState(false); // State for fetch button visibility
   const [textBoxesVisibility, setTextBoxesVisibility] = useState({});
+  const [inputFieldValues, setInputFieldValues] = useState({});
+  const [fetchedValues, setFetchedValues] = useState({});
+  const [showDescription, setShowDescription] = useState({});
 
-  const handleInputChange = (val) => {
-    setShowFetchButton(val.trim() !== "");
-  };
-
-  // Function to toggle the visibility of a specific textbox
-  const toggleTextBox = (textboxId) => {
-    setTextBoxesVisibility((prevState) => ({
+  const handleInputChange = (textBoxId, val) => {
+    setInputFieldValues((prevState) => ({
       ...prevState,
-      [textboxId]: !prevState[textboxId],
+      [textBoxId]: val,
     }));
   };
 
-  const tryItOut = () => {
-    setShowFetchButton(true);
-  }
+  const toggleTextBox = (textBoxId) => {
+    setTextBoxesVisibility((prevState) => ({
+      ...prevState,
+      [textBoxId]: !prevState[textBoxId],
+    }));
+  };
 
-  const showDescriptionFunction = () => {
-    setShowDescription(true);
-  }
+  const tryItOut = (textBoxId) => {
+    setFetchedValues((prevState) => ({
+      ...prevState,
+      [textBoxId]: true,
+    }));
+  };
 
-  const removeDescriptionFunction = () => {
-    setShowDescription(false);
-    setShowFetchButton(false);
-  }
+  const showDescriptionFunction = (textBoxId) => {
+    setShowDescription((prevState) => ({
+      ...prevState,
+      [textBoxId]: true,
+    }));
+    // No need to set fetchedValues here
+    setInputFieldValues((prevState) => ({
+      ...prevState,
+      [textBoxId]: inputFieldValues[textBoxId],
+    }));
+  };
+
+  const removeDescriptionFunction = (textBoxId) => {
+    setShowDescription((prevState) => ({
+      ...prevState,
+      [textBoxId]: false,
+    }));
+  };
 
   const data = [
     {
@@ -65,15 +80,13 @@ export const Body = () => {
     },
   ];
 
-  // Function to render the list if isOpen is true
   const renderList = () => {
     return (
       <div className="list-container">
         {data.map((newData) => (
           <ul key={newData.textBox} className="list">
-            {/* Toggle the visibility of corresponding textbox on list item click */}
             <li onClick={() => toggleTextBox(newData.textBox)}>
-              {newData.heading} <p>{newData.subheading}r</p>
+              {newData.heading} <p>{newData.subheading}</p>
             </li>
             <div
               style={{
@@ -84,7 +97,13 @@ export const Body = () => {
             >
               <div className="parameters-container">
                 <h3>Parameters</h3>
-                <button style={{marginLeft: '84%'}} className="tryButton" onClick = {tryItOut}>Try it out</button>
+                <button
+                  style={{ marginLeft: "84%" }}
+                  className="tryButton"
+                  onClick={() => tryItOut(newData.textBox)}
+                >
+                  Try it out
+                </button>
               </div>
               <table>
                 <thead>
@@ -94,26 +113,36 @@ export const Body = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <td>participant Id
-                    <h5>string</h5>
-                    (path)
-                  </td>
-                  <td>
-                    participant Id
-                    <input
-                      type="text"
-                      className="textbox"
-                      placeholder={newData.textBox}
-                      // value={textboxes.textbox1}
-                      onChange={(e) => handleInputChange(e.target.value)}
-                    />
-                  </td>
+                  <tr>
+                    <td>participant Id</td>
+                    <td>
+                      participant Id
+                      <input
+                        type="text"
+                        className="textbox"
+                        placeholder={newData.textBox}
+                        value={inputFieldValues[newData.textBox] || ""}
+                        onChange={(e) =>
+                          handleInputChange(newData.textBox, e.target.value)
+                        }
+                      />
+                    </td>
+                  </tr>
                 </tbody>
               </table>
-              {showFetchButton && textBoxesVisibility[newData.textBox] && (
-              <div className="button-container"><button onClick={removeDescriptionFunction}>Clear</button><button onClick={showDescriptionFunction}>Fetch</button></div>
-            )}
-              {showDescription && <p> "Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.",</p>}
+              {fetchedValues[newData.textBox] && (
+                <div className="button-container">
+                  <button onClick={() => removeDescriptionFunction(newData.textBox)}>
+                    Clear
+                  </button>
+                  <button onClick={() => showDescriptionFunction(newData.textBox)}>
+                    Fetch
+                  </button>
+                </div>
+              )}
+              {showDescription[newData.textBox] && (
+                <p className="terminal">{inputFieldValues[newData.textBox]}</p>
+              )}
             </div>
           </ul>
         ))}
