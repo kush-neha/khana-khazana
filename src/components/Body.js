@@ -89,11 +89,10 @@ export const Body = () => {
               {newData.heading} <p>{newData.subheading}</p>
             </li>
             <div
-              style={{
-                display: textBoxesVisibility[newData.textBox]
-                  ? "block"
-                  : "none",
-              }}
+            style={{
+              display: textBoxesVisibility[newData.textBox] ? "block" : "none",
+              backgroundColor: "lightskyblue"
+            }}
             >
               <div className="parameters-container">
                 <h3>Parameters</h3>

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Body } from "./components/Body"; // Import the Body component
 
 const LeftSidePanel = ({ openPage }) => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  const togglePanel = () => {
-    setIsOpen(!isOpen);
+  const [openReport, setOpenReport] = useState(null);
+
+  const toggleNestedOptions = (report) => {
+    setOpenReport(openReport === report ? null : report);
   };
 
   const handleNestedOptionClick = (event) => {
@@ -14,14 +15,40 @@ const LeftSidePanel = ({ openPage }) => {
   };
 
   return (
-    <div className={`left-panel ${isOpen ? 'open' : ''}`} onClick={togglePanel}>
+    <div className="left-panel">
       <ul>
-      Reports
-       {isOpen && (
-        <div className="nested-option" onClick={handleNestedOptionClick}>
-          <li>Nested Option</li>
-        </div>
-      )}
+        <li onClick={() => toggleNestedOptions('Reports')}>
+          Reports
+          {openReport === 'Reports' && (
+            <ul>
+              <li onClick={(e) => handleNestedOptionClick(e)}>Nested Option 1</li>
+            </ul>
+          )}
+        </li>
+        <li onClick={() => toggleNestedOptions('Reports1')}>
+          Reports1
+          {openReport === 'Reports1' && (
+            <ul>
+              <li onClick={(e) => handleNestedOptionClick(e)}>Nested Option A</li>
+            </ul>
+          )}
+        </li>
+        <li onClick={() => toggleNestedOptions('Reports2')}>
+          Reports2
+          {openReport === 'Reports2' && (
+            <ul>
+              <li>Nested Option X</li>
+            </ul>
+          )}
+        </li>
+        <li onClick={() => toggleNestedOptions('Reports3')}>
+          Reports3
+          {openReport === 'Reports3' && (
+            <ul>
+              <li>Nested Option Alpha</li>
+            </ul>
+          )}
+        </li>
       </ul>
     </div>
   );
