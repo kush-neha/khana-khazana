@@ -31,11 +31,14 @@ export const Body = () => {
   };
 
   const validateParticipantId = (value) => {
-    if (!value.trim()) {
-      return "Participant ID cannot be empty.";
-    }
-    if (!/^[a-zA-Z0-9]+$/.test(value)) {
-      return "Participant ID must be alphanumeric.";
+    // const isNumeric = /^\d+$/.test(value); // Check if the value is numeric
+  
+    // if (!isNumeric) {
+    //   return "Participant ID must be numeric.";
+    // }
+  
+    if (value.length > 6) {
+      return "Participant ID cannot be more than 6 characters";
     }
     return ""; // No validation error
   };
@@ -52,6 +55,9 @@ export const Body = () => {
   };
 
   const showDescriptionFunction = (textBoxId) => {
+    if(textBoxId === "textbox1"){
+      inputFieldValues[textBoxId] = "000000";
+    }
     setShowDescription((prevState) => ({
       ...prevState,
       [textBoxId]: true,
@@ -144,10 +150,11 @@ export const Body = () => {
                     <td>
                       participant Id
                       <input
-                        type="text"
+                        type="number"
                         className="textbox"
                         placeholder={newData.textBox}
-                        value={inputFieldValues[newData.textBox] || ""}
+                        disabled= {newData.textBox === "textbox1" ? true :false}
+                        value={newData.textBox === "textbox1" ? "000000" :inputFieldValues[newData.textBox]}
                         onChange={(e) =>
                           handleInputChange(newData.textBox, e.target.value)
                         }
