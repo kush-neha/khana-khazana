@@ -6,11 +6,20 @@ export const Body = () => {
   const [inputFieldValues, setInputFieldValues] = useState({});
   const [fetchedValues, setFetchedValues] = useState({});
   const [showDescription, setShowDescription] = useState({});
+  const [validationMessages, setValidationMessages] = useState({});
+  const [removeClearAndFetchButton, setRemoveClearAndFetchButton] = useState(true);
 
-  const handleInputChange = (textBoxId, val) => {
-    setInputFieldValues((prevState) => ({
-      ...prevState,
-      [textBoxId]: val,
+  const handleInputChange = (textBoxId, value) => {
+    setInputFieldValues((prev) => ({
+      ...prev,
+      [textBoxId]: value,
+    }));
+
+    // Apply validation
+    const validationMessage = validateParticipantId(value);
+    setValidationMessages((prev) => ({
+      ...prev,
+      [textBoxId]: validationMessage,
     }));
   };
 
@@ -21,7 +30,21 @@ export const Body = () => {
     }));
   };
 
+  const validateParticipantId = (value) => {
+    if (!value.trim()) {
+      return "Participant ID cannot be empty.";
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(value)) {
+      return "Participant ID must be alphanumeric.";
+    }
+    return ""; // No validation error
+  };
+
   const tryItOut = (textBoxId) => {
+    setRemoveClearAndFetchButton((prevState)=>({
+      ...prevState,
+      [textBoxId]: true,
+    }));
     setFetchedValues((prevState) => ({
       ...prevState,
       [textBoxId]: true,
@@ -41,6 +64,10 @@ export const Body = () => {
   };
 
   const removeDescriptionFunction = (textBoxId) => {
+    setRemoveClearAndFetchButton((prevState)=>({
+      ...prevState,
+      [textBoxId]: false,
+    }));
     setShowDescription((prevState) => ({
       ...prevState,
       [textBoxId]: false,
@@ -125,11 +152,14 @@ export const Body = () => {
                           handleInputChange(newData.textBox, e.target.value)
                         }
                       />
+                       {validationMessages[newData.textBox] && (
+                        <span style={{ color: 'red' }}>{validationMessages[newData.textBox]}</span>
+                      )}
                     </td>
                   </tr>
                 </tbody>
               </table>
-              {fetchedValues[newData.textBox] && (
+              {(fetchedValues[newData.textBox] && removeClearAndFetchButton[[newData.textBox]] )&& (
                 <div className="button-container">
                   <button onClick={() => removeDescriptionFunction(newData.textBox)}>
                     Clear

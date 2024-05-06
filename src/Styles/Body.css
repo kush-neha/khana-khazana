@@ -98,7 +98,6 @@ button:active {
 }
 
 span {
-  margin-left: 45%; /* Push the paragraph to the right */
   font-size: 14px; /* Adjust font size if needed */
   color: #555; /* Adjust text color */
   text-align: justify;
