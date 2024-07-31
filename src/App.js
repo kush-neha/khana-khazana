@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Body } from "./components/Body"; // Import the Body component
+import { Body } from "./components/Body"; 
+import { Body2 } from "./components/Body2"; 
 
-const LeftSidePanel = ({ openPage }) => {
-
+const LeftSidePanel = ({ handleOpenPage, handleOpenPage2 }) => {
   const [openReport, setOpenReport] = useState(null);
 
   const toggleNestedOptions = (report) => {
     setOpenReport(openReport === report ? null : report);
   };
 
-  const handleNestedOptionClick = (event) => {
+  const handleNestedOptionClick = (event, openPageFunc) => {
     event.stopPropagation(); // Prevent the click event from propagating to the parent container
-    openPage(); // Trigger the function to open the page
+    openPageFunc(); // Trigger the function to open the page
   };
 
   return (
@@ -21,15 +21,7 @@ const LeftSidePanel = ({ openPage }) => {
           Reports
           {openReport === 'Reports' && (
             <ul>
-              <li onClick={(e) => handleNestedOptionClick(e)}>Nested Option 1</li>
-            </ul>
-          )}
-        </li>
-        <li onClick={() => toggleNestedOptions('Reports1')}>
-          Reports1
-          {openReport === 'Reports1' && (
-            <ul>
-              <li onClick={(e) => handleNestedOptionClick(e)}>Nested Option A</li>
+              <li onClick={(e) => handleNestedOptionClick(e, handleOpenPage)}>Nested Option 1</li>
             </ul>
           )}
         </li>
@@ -37,15 +29,7 @@ const LeftSidePanel = ({ openPage }) => {
           Reports2
           {openReport === 'Reports2' && (
             <ul>
-              <li>Nested Option X</li>
-            </ul>
-          )}
-        </li>
-        <li onClick={() => toggleNestedOptions('Reports3')}>
-          Reports3
-          {openReport === 'Reports3' && (
-            <ul>
-              <li>Nested Option Alpha</li>
+              <li onClick={(e) => handleNestedOptionClick(e, handleOpenPage2)}>Nested Option X</li>
             </ul>
           )}
         </li>
@@ -56,15 +40,23 @@ const LeftSidePanel = ({ openPage }) => {
 
 const App = () => {
   const [isPageOpen, setPageOpen] = useState(false);
+  const [isPageOpen2, setPageOpen2] = useState(false);
 
   const handleOpenPage = () => {
     setPageOpen(true);
+    setPageOpen2(false);
+  };
+
+  const handleOpenPage2 = () => {
+    setPageOpen2(true);
+    setPageOpen(false);
   };
 
   return (
     <div>
-      <LeftSidePanel openPage={handleOpenPage} />
+      <LeftSidePanel handleOpenPage={handleOpenPage} handleOpenPage2={handleOpenPage2} />
       {isPageOpen && <Body />}
+      {isPageOpen2 && <Body2 />}
     </div>
   );
 };
